@@ -10,30 +10,34 @@
 </head>
 
 <body>
-    <form>
+    <form name="addUser">
         <div class="mb-1">
             <label for="exampleInputText1" class="form-label">Name</label>
-            <input type="text" class="form-control" id="exampleInputText1">
+            <input type="text" name="name" class="form-control" id="exampleInputText1">
         </div>
         <div class="mb-1">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1">
+            <input type="email" name="email" class="form-control" id="exampleInputEmail1">
         </div>
         <div class="mb-1">
             <label for="exampleInputPassword1" class="form-label">Phone</label>
-            <input type="Number" class="form-control" id="exampleInputPhone1">
+            <input type="Number" name="phone" class="form-control" id="exampleInputPhone1">
         </div>
         <div class="mb-1">
             <label for="exampleInputText1" class="form-label">Website</label>
-            <input type="link" class="form-control" id="exampleInputText1">
+            <input type="link" name="website" class="form-control" id="exampleInputText1">
         </div>
         <div class="mb-1 form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
             <label class="form-check-label" for="exampleCheck1">Check me out</label>
         </div>
-        <button type="submit" class="btn btn-primary btn-add-post">Submit</button>
-        <button class="btn btn-primary btn-get-posts">Get posts</button>
+        <button type="submit" class="btn btn-primary btn-submit-users">Submit</button>
+        <!-- <button type="submit" class="btn btn-primary btn-add-post">Submit</button>
+        <button id="btnzer" class="btn btn-primary btn-get-posts">Get users</button> -->
     </form>
+    
+    <button class="btn btn-danger btn-get-users">Get users</button>
+    <div class="container"></div>
+    <script src="script.js"></script>
 </body>
-<script src="script.js"></script>
 </html>
