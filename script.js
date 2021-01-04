@@ -3,12 +3,12 @@ const btnAddUsers = document.querySelector('.btn-submit-users');
 const con = document.querySelector('.container');
 
 
-function getUsers(callback) {
+function getUsers(cb) {
     const xhr = new XMLHttpRequest();
     xhr.open("GET", "https://jsonplaceholder.typicode.com/users");
     xhr.addEventListener("load", () => {
-        const responce = JSON.parse(xhr.responseText);
-        callback(responce);
+        const response = JSON.parse(xhr.responseText);
+        cb(response);
     });
     xhr.addEventListener("error", () => {
         console.log('error')
@@ -18,12 +18,12 @@ function getUsers(callback) {
 
 
 
-function createUser(body, callback) {
+function createUser(body, cb) {
     const xhr = new XMLHttpRequest();
     xhr.open("POST", "https://jsonplaceholder.typicode.com/posts");
     xhr.addEventListener("load", () => {
-        const responce = JSON.parse(xhr.responseText);
-        callback(responce);
+        const response = JSON.parse(xhr.responseText);
+        cb(response);
     });
 
     // без этого придет только id
@@ -38,95 +38,148 @@ function createUser(body, callback) {
 
 
 
-function userTemplate(users) {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    const cardBody = document.createElement("div");
-    cardBody.classList.add("card-body");
-    const title = document.createElement("h5");
-    title.classList.add("card-title");
-    title.textContent = users.name;
-    const article = document.createElement("p");
-    article.classList.add("card-text");
-    article.setAttribute('id', "output")
-    title.addEventListener('click', function (e) {
-        if (e.currentTarget) {
-            function jsonToTable(json) {
-                let cols = Object.keys(json[0]);
-                let headerRow = cols
-                    .map(col => `<th>${col}</th>`)
-                    .join("");
-                console.log(json)
-                let rows = json
-                    .filter(el => e.target.textContent === el.name)
-                    .map(row => {
-                        let tds = cols.map(col => `<td>${row[col]}</td>`).join("");
-                        return `<tr>${tds}</tr>`;
-                    })
-                    .join("");
-                const table = `
-                                <table class='table-bordered' style="margin-left: auto; margin-right: auto">
-                                    <thead>
-                                            <tr style='text-align: center'>${headerRow}</tr>
-                                     <thead>
-                                     <tbody style='text-align: center'>
-                                            ${rows}
-                                     <tbody>
-                                <table>`;
+// function userTemplate(users) {
+//     const card = document.createElement("div");
+//     card.classList.add("card");
+//     const cardBody = document.createElement("div");
+//     cardBody.classList.add("card-body");
+//     const title = document.createElement("h5");
+//     title.classList.add("card-title");
+//     title.textContent = users.name;
+//     const article = document.createElement("p");
+//     article.classList.add("card-text");
+//     article.setAttribute('id', "output")
+//     title.addEventListener('click', function (e) {
+//         if (e.currentTarget) {
+//             function jsonToTable(json) {
+//                 let cols = Object.keys(json[0]);
+//                 let headerRow = cols
+//                     .map(col => `<th>${col}</th>`)
+//                     .join("");
+//                 let rows = json
+//                     .filter(el => e.target.textContent === el.name)
+//                     .map(row => {
+//                         let tds = cols.map(col => `<td>${row[col]}</td>`).join("");
+//                         return `<tr>${tds}</tr>`;
+//                     })
+//                     .join("");
+//                 const table = `
+//                                 <table class='table-bordered' style="margin-left: auto; margin-right: auto">
+//                                     <thead>
+//                                             <tr style='text-align: center'>${headerRow}</tr>
+//                                      <thead>
+//                                      <tbody style='text-align: center'>
+//                                             ${rows}
+//                                      <tbody>
+//                                 <table>`;
 
-                return table;
-            }
-            e.target.innerHTML = jsonToTable(responce)
-        }
-    });
-    title.addEventListener('mouseleave', (e) => {
-        if (e.currentTarget) {
-            e.currentTarget.textContent = users.name;
-        }
-    });
-    cardBody.appendChild(title);
-    cardBody.appendChild(article);
-    card.appendChild(cardBody);
-    return card;
-}
-
+//                 return table;
+//             }
+//             e.target.innerHTML = jsonToTable(responce)
+//         }
+//     });
+//     title.addEventListener('mouseleave', (e) => {
+//         if (e.currentTarget) {
+//             e.currentTarget.textContent = users.name;
+//         }
+//     });
+//     cardBody.appendChild(title);
+//     cardBody.appendChild(article);
+//     card.appendChild(cardBody);
+//     return card;
+// }
 
 
 
 
-
-function renderUsers(responce) {
+function renderUsers(response) {
     const fragment = document.createDocumentFragment();
-    responce.forEach(u => {
-        const card = userTemplate(u);
-        fragment.appendChild(card);
+    response.forEach(users => {
+        const card = document.createElement("div");
+        card.classList.add("card");
+        const cardBody = document.createElement("div");
+        cardBody.classList.add("card-body");
+        const title = document.createElement("h5");
+        title.classList.add("card-title");
+        title.textContent = users.name;
+        const article = document.createElement("p");
+        article.classList.add("card-text");
+        article.setAttribute('id', "output")
+        title.addEventListener('click', function (e) {
+            if (e.currentTarget) {
+                function jsonToTable(json) {
+                    let cols = Object.keys(json[0]);
+                    let headerRow = cols
+                        .map(col => `<th style="border: 2px solid; text-align: center">${col}</th>`)
+                        .join("");
+                    let rows = json
+                        .filter(el => e.target.textContent === el.name)
+                        .map(row => {
+                            let tds = cols.map(col => `<td style="border: 2px solid; text-align: center">${row[col]}</td>`).join("");
+                            return `<tr>${tds}</tr>`;
+                        })
+                        .join("");
+                    const table = `
+                                    <table style="border: 2px solid; text-align: center">
+                                        <thead>
+                                                <tr style="border: 2px solid">${headerRow}</tr>
+                                         <thead>
+                                         <tbody>
+                                                ${rows}
+                                         <tbody>
+                                    <table>`;
+                    return table;
+                }
+                e.target.innerHTML = jsonToTable(response)
+            }
+        });
+        title.addEventListener('mouseleave', (e) => {
+            if (e.currentTarget) {
+                e.currentTarget.textContent = users.name;
+            }
+        });
+        cardBody.appendChild(title);
+        cardBody.appendChild(article);
+        card.appendChild(cardBody);
+    fragment.appendChild(card);
     });
     con.appendChild(fragment);
 }
 
+
+
+
 // форма (form)
 const form = document.forms['addUser'];
 form.addEventListener('submit', onFormSubmit)
+
 // инпуты (inputs)
-const inputName = form.elements['name']
-const inputEmail = form.elements['email']
-const inputPhone = form.elements['phone']
-const inputWebsite = form.elements['website']
+// const inputName = form.elements['name']
+// const inputEmail = form.elements['email']
+// const inputPhone = form.elements['phone']
+// const inputWebsite = form.elements['website']
 
 function onFormSubmit(e) {
     // отменили отправку формы
     e.preventDefault();
-    const nameValue = inputName.value;
-    const emailValue = inputEmail.value;
-    const phoneValue = inputPhone.value;
-    const websiteValue = inputWebsite.value;
 
-    //проверка, недающая отправить пустые инпуты
-    // if (!nameValue || emailValue || phoneValue || websiteValue) {
-    //     alert('Пожалуйта заполните все поля');
-    //     return;
-    // }
+    if (!form.elements['name'].value || !form.elements['email'].value || !form.elements['phone'].value || !form.elements['website'].value) {
+        alert('Пожалуйта заполните все поля');
+        return;
+    }
 
+    const newUser = {
+        name: form.elements['name'].value,
+        email: form.elements['email'].value,
+        phone: form.elements['phone'].value,
+        website: form.elements['website'].value
+    };
+
+    createUser(newUser, (response) => {
+        const card = renderUsers(response);
+
+        con.insertAdjacentElement("afterbegin", card);
+    });
 
 }
 
@@ -136,18 +189,25 @@ btnGetUsers.addEventListener("click", (e) => {
     getUsers(renderUsers)
 })
 
-btnAddUsers.addEventListener("click", e => {
-    const newUser = {
-        Name: `${form.elements['name'].value}`,
-        Email: `${form.elements['email'].value}`,
-        phone: `${form.elements['phone'].value}`,
-        website: `${form.elements['website'].value}`
-      };
-    createUser(newUser, responce => {
-        const card = userTemplate(responce);
-        con.insertAdjacentElement("afterbegin", card);
-    });
-});
+// btnAddUsers.addEventListener("click", e => {
+//     const newUser = {
+//         name: form.elements['name'].value,
+//         email: form.elements['email'].value,
+//         phone: form.elements['phone'].value,
+//         website: form.elements['website'].value
+//       };
+
+
+//       if (!form.elements['name'].value || form.elements['email'].value || form.elements['phone'].value || form.elements['website'].value) {
+//         alert('Пожалуйта заполните все поля');
+//         return;
+//     }
+//     createUser(newUser, (responce) => {
+//         const card = userTemplate(responce);
+
+//         con.insertAdjacentElement("afterbegin", card);
+//     });
+// });
 
 // const btn = document.querySelector('.btn-get-posts');
 // const btnAddPost = document.querySelector('.btn-add-post');
